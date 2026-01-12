@@ -1,0 +1,5 @@
+{
+  "name": "Restora - AI Photo Restoration",
+  "description": "Restore, colorize, and enhance old family photos using Gemini 3 Pro Image AI with preserving facial identity and historical authenticity.",
+  "requestFramePermissions": []
+}
