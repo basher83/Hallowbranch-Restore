@@ -14,14 +14,14 @@ const RefinePanel: React.FC = () => {
 
   const handleRefine = async () => {
     if (!instruction.trim() || isProcessing || turnsLeft <= 0) return;
-    
+
     setProcessing(true);
     setError(null);
 
     try {
       const lastImage = currentSession.history[currentSession.history.length - 1].imageUrl;
       const result = await geminiService.refineRestoration(
-          instruction, 
+          instruction,
           lastImage,
           currentSession.originalImageFile
       );
@@ -37,7 +37,7 @@ const RefinePanel: React.FC = () => {
   const handleRestart = () => {
       // In a real app we might want to just revert to history[0], but here we can just clear refinement history or reset fully
       // The prompt requirement says "Start over from original" which usually means full reset or reverting to step 1.
-      // Let's reload page logic or just clear history. 
+      // Let's reload page logic or just clear history.
       // Simplest: just confirm dialog -> resetSession() or slice history.
       // Let's implement full reset for simplicity as per "ResultActions" usually handles download.
       if (confirm("This will clear your current progress. Start over?")) {
@@ -79,7 +79,7 @@ const RefinePanel: React.FC = () => {
                 <div className="flex justify-between items-center mt-3">
                     <span className="text-xs text-gray-400">{turnsLeft} refinements remaining</span>
                     <div className="flex gap-2">
-                        <button 
+                        <button
                             onClick={handleRestart}
                             className="px-3 py-2 text-xs font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
                         >

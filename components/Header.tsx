@@ -16,9 +16,9 @@ const Header: React.FC = () => {
                     Restora
                 </h1>
             </div>
-            
+
             {currentSession && (
-                <button 
+                <button
                     onClick={resetSession}
                     className="text-sm text-gray-500 hover:text-indigo-600 dark:text-gray-400 dark:hover:text-indigo-400 font-medium"
                 >

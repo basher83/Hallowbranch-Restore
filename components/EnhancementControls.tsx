@@ -12,7 +12,7 @@ const EnhancementControls: React.FC = () => {
 
   const toggleDamage = (damage: DamageType) => {
     const current = options.damageTypes;
-    const updated = current.includes(damage) 
+    const updated = current.includes(damage)
       ? current.filter(d => d !== damage)
       : [...current, damage];
     handleGlobalChange('damageTypes', updated);
@@ -46,13 +46,13 @@ const EnhancementControls: React.FC = () => {
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 h-full flex flex-col overflow-hidden">
       <div className="flex border-b border-gray-200 dark:border-gray-700">
-        <button 
+        <button
           onClick={() => setActiveTab('global')}
           className={`flex-1 py-4 text-sm font-medium transition-colors ${activeTab === 'global' ? 'text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}`}
         >
           Global Restore
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('local')}
           className={`flex-1 py-4 text-sm font-medium transition-colors ${activeTab === 'local' ? 'text-indigo-600 border-b-2 border-indigo-600 dark:text-indigo-400' : 'text-gray-500 hover:text-gray-700 dark:text-gray-400'}`}
         >
@@ -66,7 +66,7 @@ const EnhancementControls: React.FC = () => {
             {/* Photo Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Photo Type</label>
-              <select 
+              <select
                 value={options.photoType}
                 onChange={(e) => handleGlobalChange('photoType', e.target.value)}
                 className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm"
@@ -81,11 +81,11 @@ const EnhancementControls: React.FC = () => {
               <div className="grid grid-cols-2 gap-2">
                 {Object.values(DamageType).map(damage => (
                   <label key={damage} className="flex items-center space-x-2 text-sm cursor-pointer">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       checked={options.damageTypes.includes(damage)}
                       onChange={() => toggleDamage(damage)}
-                      className="rounded text-indigo-600 focus:ring-indigo-500 border-gray-300" 
+                      className="rounded text-indigo-600 focus:ring-indigo-500 border-gray-300"
                     />
                     <span className="text-gray-600 dark:text-gray-400">{damage}</span>
                   </label>
@@ -118,9 +118,9 @@ const EnhancementControls: React.FC = () => {
               <label className="flex items-center justify-between text-sm cursor-pointer">
                 <span className="text-gray-700 dark:text-gray-300">Colorize</span>
                 <div className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only peer" 
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
                     checked={options.colorize}
                     disabled={options.photoType !== PhotoType.B_AND_W}
                     onChange={(e) => handleGlobalChange('colorize', e.target.checked)}
@@ -132,9 +132,9 @@ const EnhancementControls: React.FC = () => {
               <label className="flex items-center justify-between text-sm cursor-pointer">
                 <span className="text-gray-700 dark:text-gray-300">Preserve Grain</span>
                  <div className="relative inline-flex items-center cursor-pointer">
-                  <input 
-                    type="checkbox" 
-                    className="sr-only peer" 
+                  <input
+                    type="checkbox"
+                    className="sr-only peer"
                     checked={options.preserveGrain}
                     onChange={(e) => handleGlobalChange('preserveGrain', e.target.checked)}
                   />
@@ -146,7 +146,7 @@ const EnhancementControls: React.FC = () => {
             {/* Face Preservation */}
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Face Preservation</label>
-              <select 
+              <select
                 value={options.facePreservation}
                 onChange={(e) => handleGlobalChange('facePreservation', e.target.value)}
                 className="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm"
@@ -172,22 +172,22 @@ const EnhancementControls: React.FC = () => {
                  <div key={idx} className="p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-700 space-y-2 group">
                      <div className="flex justify-between items-center">
                          <span className="text-xs font-semibold uppercase text-gray-500 group-hover:text-indigo-500">
-                            Region {idx + 1} 
+                            Region {idx + 1}
                             <span className="ml-2 font-normal lowercase text-gray-400">
                                 (x:{Math.round(region.x)}%, y:{Math.round(region.y)}%)
                             </span>
                          </span>
                          <button onClick={() => removeRegion(idx)} className="text-gray-400 hover:text-red-500 transition-colors">&times;</button>
                      </div>
-                     <select 
-                        value={region.type} 
+                     <select
+                        value={region.type}
                         onChange={(e) => updateRegion(idx, 'type', e.target.value)}
                         className="w-full text-xs p-1.5 rounded border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800"
                      >
                          {Object.values(RepairType).map(t => <option key={t} value={t}>{t}</option>)}
                      </select>
-                     <input 
-                        type="text" 
+                     <input
+                        type="text"
                         placeholder="e.g. Remove stain, Fix tear..."
                         value={region.instruction || ''}
                         onChange={(e) => updateRegion(idx, 'instruction', e.target.value)}

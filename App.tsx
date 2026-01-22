@@ -10,7 +10,7 @@ import { geminiService } from './services/geminiService';
 
 const MainLayout: React.FC = () => {
   const { currentSession, error, setError, isProcessing } = useApp();
-  
+
   // Initialize AI service once on mount
   useEffect(() => {
      geminiService.initialize().catch(console.error);
@@ -19,9 +19,9 @@ const MainLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-200 font-sans">
       <Header />
-      
+
       <main className="flex-1 max-w-[1600px] w-full mx-auto p-4 md:p-6 lg:p-8">
-        
+
         {error && (
             <div className="mb-6 mx-auto max-w-2xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 p-4 rounded-xl flex items-start gap-3">
                 <svg className="w-5 h-5 text-red-600 dark:text-red-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -39,7 +39,7 @@ const MainLayout: React.FC = () => {
           <ImageUpload />
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 h-[calc(100vh-8rem)]">
-            
+
             {/* Left Column: Controls */}
             <div className="lg:col-span-3 flex flex-col gap-4 h-full overflow-hidden">
                <EnhancementControls />
@@ -56,18 +56,18 @@ const MainLayout: React.FC = () => {
                <div className="mt-auto">
                    <ResultActions />
                </div>
-               
+
                {/* Gallery Preview / Session History (Mini) */}
                {currentSession.history.length > 1 && (
                    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
                        <h4 className="text-xs font-semibold text-gray-500 uppercase mb-3">Session History</h4>
                        <div className="flex gap-2 overflow-x-auto pb-2 custom-scrollbar">
                            {currentSession.history.map((item, idx) => (
-                               <img 
-                                key={item.id} 
-                                src={item.imageUrl} 
+                               <img
+                                key={item.id}
+                                src={item.imageUrl}
                                 alt={`Step ${idx}`}
-                                className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-600 shrink-0 cursor-pointer hover:border-indigo-500" 
+                                className="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-600 shrink-0 cursor-pointer hover:border-indigo-500"
                                />
                            ))}
                        </div>

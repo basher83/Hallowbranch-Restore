@@ -4,10 +4,10 @@ import { RepairType } from '../types';
 
 const BeforeAfterView: React.FC = () => {
   const { currentSession, isProcessing, activeTab, options, setOptions } = useApp();
-  
+
   // State for comparison slider
   const [sliderPosition, setSliderPosition] = useState(50);
-  
+
   // State for Viewport transform
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
@@ -23,20 +23,20 @@ const BeforeAfterView: React.FC = () => {
   const imageRef = useRef<HTMLImageElement>(null);
 
   const originalUrl = currentSession?.originalImageUrl;
-  const restoredUrl = currentSession?.history.length 
-    ? currentSession.history[currentSession.history.length - 1].imageUrl 
+  const restoredUrl = currentSession?.history.length
+    ? currentSession.history[currentSession.history.length - 1].imageUrl
     : null;
 
   // Determine which image to show/edit
-  // In Local mode, we prefer the restored image if available to further refine it, 
+  // In Local mode, we prefer the restored image if available to further refine it,
   // otherwise the original.
-  const displayUrl = activeTab === 'local' 
-    ? (restoredUrl || originalUrl) 
+  const displayUrl = activeTab === 'local'
+    ? (restoredUrl || originalUrl)
     : (restoredUrl || originalUrl);
 
   const resetView = () => {
-      setZoom(1); 
-      setPan({x:0, y:0}); 
+      setZoom(1);
+      setPan({x:0, y:0});
   };
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const BeforeAfterView: React.FC = () => {
        // Slider interaction is handled by the slider element itself
        return;
     }
-    
+
     // In Local mode: check modifiers for Pan vs Select
     if (activeTab === 'local') {
         const isShift = e.shiftKey;
@@ -66,7 +66,7 @@ const BeforeAfterView: React.FC = () => {
              const rect = imageRef.current.getBoundingClientRect();
              const x = (e.clientX - rect.left) / zoom;
              const y = (e.clientY - rect.top) / zoom;
-             
+
              setIsDrawing(true);
              setStartPos({ x, y });
              setCurrentRect({ x, y, w: 0, h: 0 });
@@ -109,7 +109,7 @@ const BeforeAfterView: React.FC = () => {
       // Slider Drag logic
       if (activeTab === 'global' && e.buttons === 1 && containerRef.current && !isPanning && !isDrawing) {
            // We only check if target is slider-handle-area logic handled in slider div?
-           // Actually slider logic was separate. If we are just moving mouse over container without special state, 
+           // Actually slider logic was separate. If we are just moving mouse over container without special state,
            // we might update slider if dragging the slider handle.
            // Since slider handle has its own onMouseDown, we need to know if we are dragging IT.
            // To keep it simple: slider updates happen in handleSliderMove which is called if we track slider state.
@@ -118,7 +118,7 @@ const BeforeAfterView: React.FC = () => {
 
   const handleMouseUp = () => {
       if (isPanning) setIsPanning(false);
-      
+
       if (isDrawing && currentRect && imageRef.current) {
           setIsDrawing(false);
           // Commit the region
@@ -178,7 +178,7 @@ const BeforeAfterView: React.FC = () => {
       </div>
 
       {/* Main Viewport */}
-      <div 
+      <div
         ref={containerRef}
         className={`relative flex-1 overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] dark:bg-gray-900 ${activeTab === 'local' ? 'cursor-crosshair' : 'cursor-default'}`}
         onMouseMove={(e) => {
@@ -198,38 +198,38 @@ const BeforeAfterView: React.FC = () => {
         )}
 
         {/* Content Container with Transform */}
-        <div 
+        <div
             className="absolute inset-0 flex items-center justify-center transition-transform duration-75 origin-center"
-            style={{ 
-                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` 
+            style={{
+                transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)`
             }}
         >
              {/* Wrapper for Image + Overlays to ensure same coordinate space */}
              <div className="relative inline-block max-w-full max-h-full">
-                 <img 
+                 <img
                     ref={imageRef}
-                    src={displayUrl} 
-                    alt="Workarea" 
+                    src={displayUrl}
+                    alt="Workarea"
                     className="max-w-full max-h-[calc(100vh-14rem)] object-contain pointer-events-none select-none shadow-2xl block"
                     draggable={false}
                  />
 
                  {/* Global Compare Overlay (Only visible in Global mode with result) */}
                  {activeTab === 'global' && restoredUrl && (
-                     <div 
+                     <div
                         className="absolute inset-0 pointer-events-none select-none"
                         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
                      >
-                         <img 
-                            src={originalUrl} 
-                            alt="Original" 
+                         <img
+                            src={originalUrl}
+                            alt="Original"
                             className="w-full h-full object-contain"
                             draggable={false}
                          />
                          <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-2 py-1 rounded backdrop-blur-md">Original</div>
                      </div>
                  )}
-                 
+
                  {activeTab === 'global' && restoredUrl && (
                     <div className="absolute top-4 right-4 bg-indigo-600/80 text-white text-xs px-2 py-1 rounded backdrop-blur-md">Restored</div>
                  )}
@@ -272,7 +272,7 @@ const BeforeAfterView: React.FC = () => {
 
         {/* Global Slider Handle */}
         {activeTab === 'global' && restoredUrl && !isProcessing && (
-            <div 
+            <div
                 className="absolute top-0 bottom-0 w-1 bg-white cursor-col-resize z-20 image-compare-handle hover:bg-indigo-400 transition-colors"
                 style={{ left: `${sliderPosition}%` }}
                 onMouseDown={(e) => { e.stopPropagation(); /* Let parent handle logic via button check */ }}

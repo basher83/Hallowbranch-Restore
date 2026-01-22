@@ -22,7 +22,7 @@ const ResultActions: React.FC = () => {
       // Create a canvas to stitch images side by side
       const img1 = await loadImage(originalImage);
       const img2 = await loadImage(currentImage);
-      
+
       const canvas = document.createElement('canvas');
       canvas.width = img1.width + img2.width;
       canvas.height = Math.max(img1.height, img2.height);
@@ -35,10 +35,10 @@ const ResultActions: React.FC = () => {
           ctx.fillStyle = 'white';
           ctx.strokeStyle = 'black';
           ctx.lineWidth = 4;
-          
+
           ctx.strokeText("Original", 40, img1.height - 40);
           ctx.fillText("Original", 40, img1.height - 40);
-          
+
           ctx.strokeText("Restored", img1.width + 40, img1.height - 40);
           ctx.fillText("Restored", img1.width + 40, img1.height - 40);
 
@@ -57,7 +57,7 @@ const ResultActions: React.FC = () => {
 
   return (
     <div className="grid grid-cols-2 gap-4">
-        <button 
+        <button
             onClick={() => downloadImage(currentImage, `restora-result-${Date.now()}.png`)}
             className="flex items-center justify-center gap-2 py-3 px-4 bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600 text-white rounded-xl transition-colors font-medium"
         >
@@ -67,7 +67,7 @@ const ResultActions: React.FC = () => {
              Download Restored
         </button>
 
-        <button 
+        <button
             onClick={createComparisonCanvas}
             className="flex items-center justify-center gap-2 py-3 px-4 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 rounded-xl transition-colors font-medium"
         >

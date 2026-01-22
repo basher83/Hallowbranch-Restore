@@ -81,7 +81,7 @@ export const buildPrompt = (options: RestorationOptions): string => {
   }
 
   prompt += "Restoration approach: Balance restoration quality with historical authenticity.";
-  
+
   return prompt;
 };
 
@@ -108,7 +108,7 @@ export class GeminiService {
        // which says "Use this process.env.API_KEY string directly".
        // However, the prompt specifically for Veo/Gemini 3 Pro Image says:
        // "The selected API key is available via process.env.API_KEY."
-       
+
        this.ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
     } else {
        // Fallback for dev environment or if specific window object missing, assuming env var exists
@@ -133,7 +133,7 @@ export class GeminiService {
       config: {
         systemInstruction: SYSTEM_INSTRUCTION,
         imageConfig: {
-          imageSize: '2K' 
+          imageSize: '2K'
         }
       },
     });
@@ -148,11 +148,11 @@ export class GeminiService {
     // Extract image
     const candidates = response.candidates;
     if (!candidates || candidates.length === 0) throw new Error("No response from AI");
-    
+
     // Find image part
     const parts = candidates[0].content.parts;
     let base64Image = null;
-    
+
     for (const part of parts) {
       if (part.inlineData) {
         base64Image = part.inlineData.data;
@@ -173,7 +173,7 @@ export class GeminiService {
   }
 
   public async refineRestoration(
-    instruction: string, 
+    instruction: string,
     lastGeneratedImageUrl: string,
     originalFile: File
   ): Promise<{ imageUrl: string, prompt: string }> {
@@ -189,8 +189,8 @@ export class GeminiService {
     // const originalImagePart = await fileToGenerativePart(originalFile); // Optional: Provide original as reference if model supports multiple input images well.
     // For now, let's rely on the chat history + inputting the image we want to CHANGE (the last one).
 
-    const refinementPrompt = `Refine the last image with these instructions: ${instruction}. 
-    Reference the original uploaded photograph structure to prevent identity drift. 
+    const refinementPrompt = `Refine the last image with these instructions: ${instruction}.
+    Reference the original uploaded photograph structure to prevent identity drift.
     Ensure high fidelity.`;
 
     const response = await this.chatSession.sendMessage({
@@ -202,10 +202,10 @@ export class GeminiService {
 
     const candidates = response.candidates;
     if (!candidates || candidates.length === 0) throw new Error("No response from AI");
-    
+
     const parts = candidates[0].content.parts;
     let base64Image = null;
-    
+
     for (const part of parts) {
       if (part.inlineData) {
         base64Image = part.inlineData.data;
