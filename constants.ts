@@ -1,4 +1,4 @@
-import { DamageType, FacePreservation, Intensity, PhotoType, RestorationOptions } from "./types";
+import { FacePreservation, Intensity, PhotoType, RestorationOptions } from './types';
 
 export const DEFAULT_OPTIONS: RestorationOptions = {
   photoType: PhotoType.B_AND_W,
@@ -7,7 +7,8 @@ export const DEFAULT_OPTIONS: RestorationOptions = {
   colorize: false,
   preserveGrain: true,
   facePreservation: FacePreservation.STRICT,
-  localRepairRegions: []
+  localRepairRegions: [],
+  preEnhance: false,
 };
 
 export const SYSTEM_INSTRUCTION = `You are a professional photo restoration specialist. Your role is to repair and enhance damaged family photographs while maintaining absolute fidelity to the original subjects' identities, expressions, and historical authenticity.
@@ -24,3 +25,4 @@ Never alter the identity of the person. Always use positive constraints ("preser
 export const MODEL_NAME = 'gemini-3-pro-image-preview';
 export const MAX_FILE_SIZE_MB = 7;
 export const MAX_REFINEMENT_TURNS = 5;
+export const PRE_ENHANCE_MAX_DIM = 2000;

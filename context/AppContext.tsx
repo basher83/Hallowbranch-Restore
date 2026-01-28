@@ -1,16 +1,20 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { AppState, RestorationOptions, RestorationSession, RestorationHistoryItem } from '../types';
+
 import { DEFAULT_OPTIONS } from '../constants';
+import { AppState, RestorationOptions, RestorationSession, RestorationHistoryItem } from '../types';
 
 interface AppContextType extends AppState {
   setApiKey: (key: string) => void;
   setOptions: (options: RestorationOptions) => void;
   startSession: (file: File) => void;
+  updateOriginalImage: (file: File, url: string) => void;
+  updateBaseImage: (file: File, url: string) => void;
   addToHistory: (imageUrl: string, prompt: string, type: 'initial' | 'refinement') => void;
   setProcessing: (isProcessing: boolean) => void;
   setError: (error: string | null) => void;
   resetSession: () => void;
   setActiveTab: (tab: 'global' | 'local') => void;
+  setModalOpen: (isOpen: boolean) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -22,6 +26,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const [isProcessing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'global' | 'local'>('global');
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const setApiKey = (key: string) => setApiKeyState(key);
 
@@ -31,8 +36,10 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       id: Date.now().toString(),
       originalImageUrl: url,
       originalImageFile: file,
+      baseImageUrl: url,
+      baseImageFile: file,
       history: [],
-      currentStepIndex: -1
+      currentStepIndex: -1,
     });
     setError(null);
   };
@@ -46,15 +53,15 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       thumbnailUrl: imageUrl,
       promptUsed: prompt,
       timestamp: Date.now(),
-      type
+      type,
     };
 
-    setCurrentSession(prev => {
+    setCurrentSession((prev) => {
       if (!prev) return null;
       return {
         ...prev,
         history: [...prev.history, newItem],
-        currentStepIndex: prev.history.length // index of the new item
+        currentStepIndex: prev.history.length, // index of the new item
       };
     });
   };
@@ -64,25 +71,56 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     setOptions(DEFAULT_OPTIONS);
     setError(null);
     setActiveTab('global');
+    setModalOpen(false);
+  };
+
+  const updateOriginalImage = (file: File, url: string) => {
+    setCurrentSession((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        originalImageUrl: url,
+        originalImageFile: file,
+        baseImageUrl: url,
+        baseImageFile: file,
+      };
+    });
+  };
+
+  const updateBaseImage = (file: File, url: string) => {
+    setCurrentSession((prev) => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        baseImageUrl: url,
+        baseImageFile: file,
+      };
+    });
   };
 
   return (
-    <AppContext.Provider value={{
-      apiKey,
-      currentSession,
-      options,
-      isProcessing,
-      error,
-      activeTab,
-      setApiKey,
-      setOptions,
-      startSession,
-      addToHistory,
-      setProcessing,
-      setError,
-      resetSession,
-      setActiveTab
-    }}>
+    <AppContext.Provider
+      value={{
+        apiKey,
+        currentSession,
+        options,
+        isProcessing,
+        error,
+        activeTab,
+        isModalOpen,
+        setApiKey,
+        setOptions,
+        startSession,
+        updateOriginalImage,
+        updateBaseImage,
+        addToHistory,
+        setProcessing,
+        setError,
+        resetSession,
+        setActiveTab,
+        setModalOpen,
+      }}
+    >
       {children}
     </AppContext.Provider>
   );
@@ -90,6 +128,6 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
 export const useApp = () => {
   const context = useContext(AppContext);
-  if (!context) throw new Error("useApp must be used within AppProvider");
+  if (!context) throw new Error('useApp must be used within AppProvider');
   return context;
 };

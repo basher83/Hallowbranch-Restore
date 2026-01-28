@@ -1,33 +1,33 @@
 export enum PhotoType {
-  B_AND_W = "Old B&W",
-  FADED_COLOR = "Faded color",
-  MODERN = "Modern photo"
+  B_AND_W = 'Old B&W',
+  FADED_COLOR = 'Faded color',
+  MODERN = 'Modern photo',
 }
 
 export enum DamageType {
-  SCRATCHES = "Scratches",
-  TEARS = "Tears",
-  FADING = "Fading",
-  STAINS = "Stains",
-  CRACKS = "Cracks"
+  SCRATCHES = 'Scratches',
+  TEARS = 'Tears',
+  FADING = 'Fading',
+  STAINS = 'Stains',
+  CRACKS = 'Cracks',
 }
 
 export enum Intensity {
-  LIGHT = "Light",
-  MODERATE = "Moderate",
-  AGGRESSIVE = "Aggressive"
+  LIGHT = 'Light',
+  MODERATE = 'Moderate',
+  AGGRESSIVE = 'Aggressive',
 }
 
 export enum FacePreservation {
-  STRICT = "Strict",
-  MODERATE = "Moderate",
-  FLEXIBLE = "Flexible"
+  STRICT = 'Strict',
+  MODERATE = 'Moderate',
+  FLEXIBLE = 'Flexible',
 }
 
 export enum RepairType {
-  FIX_DAMAGE = "Fix damage",
-  REDUCE_NOISE = "Reduce noise",
-  COLORIZE_AREA = "Colorize area"
+  FIX_DAMAGE = 'Fix damage',
+  REDUCE_NOISE = 'Reduce noise',
+  COLORIZE_AREA = 'Colorize area',
 }
 
 export interface LocalRepairRegion {
@@ -47,6 +47,7 @@ export interface RestorationOptions {
   preserveGrain: boolean;
   facePreservation: FacePreservation;
   localRepairRegions: LocalRepairRegion[];
+  preEnhance: boolean;
 }
 
 // Alias as requested
@@ -56,6 +57,8 @@ export interface RestorationSession {
   id: string;
   originalImageUrl: string;
   originalImageFile: File;
+  baseImageUrl?: string;
+  baseImageFile?: File;
   history: RestorationHistoryItem[];
   currentStepIndex: number;
 }
@@ -76,4 +79,5 @@ export interface AppState {
   isProcessing: boolean;
   error: string | null;
   activeTab: 'global' | 'local';
+  isModalOpen: boolean;
 }
