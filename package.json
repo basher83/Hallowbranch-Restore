@@ -6,17 +6,38 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --check ."
   },
   "dependencies": {
-    "react": "^19.2.3",
     "@google/genai": "^1.35.0",
-    "react-dom": "^19.2.3"
+    "@tensorflow/tfjs": "^4.11.0",
+    "@upscalerjs/esrgan-slim": "^1.0.0-beta.12",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "react-image-crop": "^11.0.10",
+    "upscaler": "^1.0.0-beta.19"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "@types/node": "^22.14.0",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "jsdom": "^27.4.0",
+    "prettier": "^3.8.1",
     "typescript": "~5.8.2",
-    "vite": "^6.2.0"
+    "vite": "^6.2.0",
+    "vitest": "^4.0.18",
+    "wrangler": "^4.61.0"
   }
 }

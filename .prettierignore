@@ -1,0 +1,10 @@
+node_modules
+vite-env.d.ts
+/dist
+/build
+/coverage
+/.specstory
+/.claude
+/.git
+package-lock.json
+worker/package-lock.json
