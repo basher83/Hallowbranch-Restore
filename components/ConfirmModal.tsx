@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from 'react';
 
 interface ConfirmModalProps {
   isOpen: boolean;
@@ -14,8 +14,8 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
   isOpen,
   title,
   message,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
+  confirmLabel = 'Confirm',
+  cancelLabel = 'Cancel',
   onConfirm,
   onCancel,
 }) => {
@@ -29,12 +29,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) {
+      if (e.key === 'Escape' && isOpen) {
         onCancel();
       }
     };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, [isOpen, onCancel]);
 
   if (!isOpen) return null;
@@ -46,31 +46,30 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
       aria-modal="true"
       aria-labelledby="modal-title"
     >
-      <div
+      <button
+        type="button"
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
         onClick={onCancel}
+        aria-label="Dismiss dialog"
       />
       <div className="relative bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-md w-full mx-4 p-6 border border-gray-200 dark:border-gray-700">
-        <h2
-          id="modal-title"
-          className="text-lg font-semibold text-gray-900 dark:text-white mb-2"
-        >
+        <h2 id="modal-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
           {title}
         </h2>
-        <p className="text-gray-600 dark:text-gray-300 text-sm mb-6">
-          {message}
-        </p>
+        <p className="text-gray-600 dark:text-gray-300 text-sm mb-6 text-pretty">{message}</p>
         <div className="flex justify-end gap-3">
           <button
+            type="button"
             onClick={onCancel}
-            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800"
           >
             {cancelLabel}
           </button>
           <button
             ref={confirmButtonRef}
+            type="button"
             onClick={onConfirm}
-            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors"
+            className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-800"
           >
             {confirmLabel}
           </button>

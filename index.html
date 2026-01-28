@@ -1,9 +1,21 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="dark">
   <head>
+    <script type="importmap">
+      {
+        "imports": {
+          "react/": "https://esm.sh/react@^19.2.3/",
+          "react": "https://esm.sh/react@^19.2.3",
+          "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+          "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
+        }
+      }
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111827" />
     <title>Restora - AI Photo Restoration</title>
+    <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -22,13 +34,17 @@
                 700: '#4338ca',
                 800: '#3730a3',
                 900: '#312e81',
-              }
-            }
-          }
-        }
-      }
+              },
+            },
+          },
+        },
+      };
     </script>
+    <script type="module" src="/index.tsx"></script>
     <style>
+      html {
+        color-scheme: dark;
+      }
       /* Custom scrollbar for dark mode */
       .dark ::-webkit-scrollbar {
         width: 8px;
@@ -45,21 +61,19 @@
         background: #6b7280;
       }
       .image-compare-handle {
-        box-shadow: 0 0 15px rgba(0,0,0,0.5);
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
       }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-  }
-}
-</script>
-</head>
-  <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+  </head>
+  <body
+    class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200"
+  >
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-white focus:px-3 focus:py-2 focus:text-sm focus:font-medium focus:text-gray-900 focus:shadow-lg"
+    >
+      Skip to main content
+    </a>
     <div id="root"></div>
   </body>
 </html>

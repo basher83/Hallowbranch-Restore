@@ -7,10 +7,10 @@ export const generateThumbnail = (
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
       if (!ctx) {
-        reject(new Error("Could not get canvas context"));
+        reject(new Error('Could not get canvas context'));
         return;
       }
 
@@ -36,11 +36,11 @@ export const generateThumbnail = (
       ctx.drawImage(img, 0, 0, width, height);
 
       // Use lower quality JPEG for thumbnails to save even more space
-      resolve(canvas.toDataURL("image/jpeg", 0.7));
+      resolve(canvas.toDataURL('image/jpeg', 0.7));
     };
 
     img.onerror = () => {
-      reject(new Error("Failed to load image for thumbnail generation"));
+      reject(new Error('Failed to load image for thumbnail generation'));
     };
 
     img.src = imageUrl;
