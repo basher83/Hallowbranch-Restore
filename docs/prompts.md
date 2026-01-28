@@ -11,7 +11,7 @@ Research was conducted in two phases: first broad domain discovery, then targete
 #### Phase 1: Domain Discovery (Broad)
 
 ```text
-What are the current best practices in 2024-2025 for digitizing and 
+What are the current best practices in 2024-2025 for digitizing and
 preparing old family photographs before AI-based restoration?
 
 Cover the full pipeline from physical photo to AI-ready input:
@@ -21,7 +21,7 @@ Cover the full pipeline from physical photo to AI-ready input:
 - Common mistakes that degrade AI restoration quality
 
 Include both professional archival workflows and consumer/hobbyist approaches.
-For each stage, note: whether it's essential vs optional, and whether 
+For each stage, note: whether it's essential vs optional, and whether
 it's typically done manually, with traditional software, or delegated to AI.
 ```
 
@@ -35,25 +35,25 @@ it's typically done manually, with traditional software, or delegated to AI.
 **Context from Phase 1**: Solid Phase 1 results. Key takeaway: minimal preprocessing, high-resolution scan, let AI see the damage. The gap: Phase 1 references GFPGAN/Real-ESRGAN but not Gemini. Need to validate whether Gemini follows the same "raw scan preferred" pattern or has different requirements.
 
 ```text
-For Google's Gemini image generation/editing models in AI Studio 
-(specifically gemini-2.0-flash-preview-image-generation or 
-gemini-3-pro-image-preview), what input characteristics produce 
+For Google's Gemini image generation/editing models in AI Studio
+(specifically gemini-2.0-flash-preview-image-generation or
+gemini-3-pro-image-preview), what input characteristics produce
 the best photo restoration results?
 
 Evaluate:
 1. Resolution requirements: min/max dimensions, DPI handling, file size limits
 2. Format preferences: JPEG vs PNG vs TIFF for input
 3. Does the model prefer raw degraded scans or pre-cleaned images?
-4. Prompt engineering patterns for restoration tasks (scratch removal, 
+4. Prompt engineering patterns for restoration tasks (scratch removal,
    colorization, face preservation)
 5. Known limitations for family photo restoration use cases
 
-Search: Google AI documentation (ai.google.dev), AI Studio guides, 
-Gemini API reference, developer forums, Reddit communities 
-(r/GoogleGeminiAI, r/photorestoration, r/StableDiffusion for 
+Search: Google AI documentation (ai.google.dev), AI Studio guides,
+Gemini API reference, developer forums, Reddit communities
+(r/GoogleGeminiAI, r/photorestoration, r/StableDiffusion for
 comparative context).
 
-If documentation gaps exist for restoration-specific workflows, 
+If documentation gaps exist for restoration-specific workflows,
 indicate what's undocumented vs confirmed.
 ```
 
@@ -84,27 +84,27 @@ indicate what's undocumented vs confirmed.
 #### Research Prompt: Google AI Studio Best Practices
 
 ```text
-What are the best practices for using Google AI Studio chat interface 
+What are the best practices for using Google AI Studio chat interface
 to iteratively build and prototype web applications?
 
-Context: Using AI Studio as a development assistant (similar to Claude 
-or ChatGPT for coding) rather than as an API endpoint. Goal is to 
-generate React/Next.js components, API routes, and prompt templates 
+Context: Using AI Studio as a development assistant (similar to Claude
+or ChatGPT for coding) rather than as an API endpoint. Goal is to
+generate React/Next.js components, API routes, and prompt templates
 through conversational iteration.
 
 Research:
-1. Code generation capabilities: How does Gemini in AI Studio compare 
+1. Code generation capabilities: How does Gemini in AI Studio compare
    to Claude/GPT-4 for full-stack web app development?
-2. Session management: Best practices for maintaining context across 
+2. Session management: Best practices for maintaining context across
    a long development session (file structure, component relationships)
-3. Prompt patterns: How to structure requests for component generation, 
+3. Prompt patterns: How to structure requests for component generation,
    refactoring, and iterative refinement
-4. Artifact handling: Can AI Studio preview/render generated code, 
+4. Artifact handling: Can AI Studio preview/render generated code,
    or is it text-only output?
-5. Limitations: Known gaps for development workflows compared to 
+5. Limitations: Known gaps for development workflows compared to
    dedicated coding assistants
 
-Include experiences from developers using AI Studio for app prototyping, 
+Include experiences from developers using AI Studio for app prototyping,
 not just API integration tutorials.
 ```
 
@@ -133,16 +133,16 @@ not just API integration tutorials.
 #### Initial Build Prompt
 
 ```text
-Create a family photo restoration web app using React and TypeScript 
+Create a family photo restoration web app using React and TypeScript
 that integrates with Gemini 3 Pro Image for AI-powered restoration.
 
 ## App Purpose
-Restore old family photographs (black & white and color) by removing 
-damage, colorizing, and enhancing clarity while preserving facial 
+Restore old family photographs (black & white and color) by removing
+damage, colorizing, and enhancing clarity while preserving facial
 identity and historical authenticity.
 
 ## Core User Flow
-Upload → Select restoration options → Process with Gemini → 
+Upload → Select restoration options → Process with Gemini →
 Compare before/after → Refine iteratively → Download result
 
 ## Required Components
@@ -152,7 +152,7 @@ Compare before/after → Refine iteratively → Download result
 - Accept PNG and JPEG only (validate on select)
 - Max file size: 7MB (AI Studio limit)
 - Show local preview using URL.createObjectURL before processing
-- Display helper text: "For best results, scan at 600+ DPI. Avoid 
+- Display helper text: "For best results, scan at 600+ DPI. Avoid
   heavy preprocessing—the AI works best with original scans."
 
 ### EnhancementControls
@@ -160,7 +160,7 @@ Compare before/after → Refine iteratively → Download result
 
 **Global restore options:**
 - Photo type selector: "Old B&W", "Faded color", "Modern photo"
-- Damage types (multi-select checkboxes): Scratches, Tears, Fading, 
+- Damage types (multi-select checkboxes): Scratches, Tears, Fading,
   Stains, Cracks
 - Restoration intensity: Light / Moderate / Aggressive (radio buttons)
 - Colorize toggle (only enabled when "Old B&W" selected)
@@ -214,7 +214,7 @@ repair and enhance damaged family photographs while maintaining absolute fidelit
 - Map damage type checkboxes to specific repair instructions
 - Map intensity level to restoration approach language
 - Map face preservation level to constraint specificity
-- Always use positive constraints ("preserve exactly") never negative 
+- Always use positive constraints ("preserve exactly") never negative
   ("do not alter")
 - For local repairs, include region coordinates and scope limitation
 
@@ -246,9 +246,9 @@ authenticity.
 ### Multi-turn conversation support
 - Use Gemini chat session (startChat) for iterative refinement
 - Maintain session state so follow-up prompts reference previous output
-- Include "reference the original uploaded photograph" in refinement 
+- Include "reference the original uploaded photograph" in refinement
   prompts to prevent identity drift
-- Limit to 5 refinement turns before prompting user to restart from 
+- Limit to 5 refinement turns before prompting user to restart from
   original
 
 ## Technical Requirements
@@ -258,9 +258,9 @@ authenticity.
 - Model: gemini-3-pro-image-preview
 - Response modalities: ['TEXT', 'IMAGE']
 - Image output size: 2K
-- State management: React Context for restoration parameters and 
+- State management: React Context for restoration parameters and
   session history
-- Error handling: Network timeouts, invalid formats, file size 
+- Error handling: Network timeouts, invalid formats, file size
   exceeded, API rate limits with user-friendly messages
 
 ## UI Style
@@ -270,7 +270,7 @@ authenticity.
 - Card-based layout for controls and preview
 - Responsive: Works on desktop and tablet
 
-Generate the complete application with all components, the Gemini 
+Generate the complete application with all components, the Gemini
 service layer with prompt builder, and proper TypeScript types.
 ```
 
@@ -312,9 +312,9 @@ After initial generation, use these follow-up prompts for iteration:
 ##### Follow-up Prompt 1: Add Local Edit Tool
 
 ```text
-The RegionSelector needs implementation. Add a rectangular selection 
-overlay that appears when "Local repair mode" is active. Store 
-selection as {x, y, width, height} relative to image dimensions. 
+The RegionSelector needs implementation. Add a rectangular selection
+overlay that appears when "Local repair mode" is active. Store
+selection as {x, y, width, height} relative to image dimensions.
 Pass these coordinates to the prompt builder.
 ```
 
@@ -324,9 +324,9 @@ Pass these coordinates to the prompt builder.
 ##### Follow-up Prompt 2: Refine Prompt Builder
 
 ```text
-In geminiService.ts, the buildPrompt function needs the full 
-parameterization. Add the damage type mapping, intensity mapping, 
-and face preservation mapping as shown in the requirements. Export 
+In geminiService.ts, the buildPrompt function needs the full
+parameterization. Add the damage type mapping, intensity mapping,
+and face preservation mapping as shown in the requirements. Export
 TypeScript types for RestorationConfig.
 ```
 
@@ -339,7 +339,7 @@ TypeScript types for RestorationConfig.
 Add comprehensive error handling for:
 - Network timeouts during API calls (show retry button)
 - Files exceeding 7MB (show size and recommendation to resize)
-- API rate limit responses (implement exponential backoff, show 
+- API rate limit responses (implement exponential backoff, show
   wait time to user)
 - Session expiry (prompt to start new session)
 ```

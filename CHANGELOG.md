@@ -3,9 +3,9 @@
 ### 🚀 Features
 
 - Initialize project structure and dependencies
-- *(worker)* Add Cloudflare Worker proxy for Gemini API
-- *(utils)* Add image utility functions for thumbnail generation
-- *(components)* Add ConfirmModal for accessible confirmation dialogs
+- _(worker)_ Add Cloudflare Worker proxy for Gemini API
+- _(utils)_ Add image utility functions for thumbnail generation
+- _(components)_ Add ConfirmModal for accessible confirmation dialogs
 
 ### 💼 Other
 

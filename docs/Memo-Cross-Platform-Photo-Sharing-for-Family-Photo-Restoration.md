@@ -19,21 +19,21 @@ Evaluated methods for mom (iPhone) to share full-quality photos with me (Android
 
 ### Tier 1: Cloud Services (No Self-Hosting)
 
-| Method | Sender Friction | Quality | Notes |
-|--------|----------------|---------|-------|
-| **Google Photos (shared account)** | Zero after setup | Original (HEIC loophole) | Auto-sync, no per-share action |
-| **iCloud Link** | 3-4 taps + remembering options | Full + metadata | Per-share cognitive load |
+| Method                             | Sender Friction                | Quality                  | Notes                          |
+| ---------------------------------- | ------------------------------ | ------------------------ | ------------------------------ |
+| **Google Photos (shared account)** | Zero after setup               | Original (HEIC loophole) | Auto-sync, no per-share action |
+| **iCloud Link**                    | 3-4 taps + remembering options | Full + metadata          | Per-share cognitive load       |
 
 **HEIC loophole:** Google can't efficiently recompress HEIC, so iPhone photos get original quality backup free.
 
 ### Tier 2: Self-Hosted
 
-| Method | Sender Friction | Reliability (iOS) | Notes |
-|--------|----------------|-------------------|-------|
-| **PhotoSync + PhotoPrism** | Zero (trigger-based) | High | $5-10 app, geofence/charge triggers |
-| **Immich (current)** | Medium (open app occasionally) | Medium | iOS background upload unreliable |
-| **Immich (post-PhotoKit)** | Zero (expected) | High (expected) | Q1-Q2 2026 ETA |
-| **Nextcloud** | High | Poor | iOS background upload broken |
+| Method                     | Sender Friction                | Reliability (iOS) | Notes                               |
+| -------------------------- | ------------------------------ | ----------------- | ----------------------------------- |
+| **PhotoSync + PhotoPrism** | Zero (trigger-based)           | High              | $5-10 app, geofence/charge triggers |
+| **Immich (current)**       | Medium (open app occasionally) | Medium            | iOS background upload unreliable    |
+| **Immich (post-PhotoKit)** | Zero (expected)                | High (expected)   | Q1-Q2 2026 ETA                      |
+| **Nextcloud**              | High                           | Poor              | iOS background upload broken        |
 
 **iOS reality check:** Apple aggressively restricts background processes. Until PhotoKit API ships (Q1-Q2 2026), all self-hosted solutions face the same iOS limitation. Differentiator is workaround quality (PhotoSync's triggers vs Immich's periodic app opening).
 
@@ -54,13 +54,13 @@ Evaluated methods for mom (iPhone) to share full-quality photos with me (Android
 
 ### Reasoning
 
-| Factor | Weight | Google Photos | Self-Hosted |
-|--------|--------|--------------|-------------|
-| Zero sender friction | High | ✅ | ✅ (PhotoSync) |
-| Zero deployment | Medium | ✅ | ❌ |
-| Zero maintenance | Medium | ✅ | ❌ |
-| Graceful deprecation | High | ✅ | ❌ (wasted investment) |
-| Pipeline integration | Low (temporary) | Adequate | Better |
+| Factor               | Weight          | Google Photos | Self-Hosted            |
+| -------------------- | --------------- | ------------- | ---------------------- |
+| Zero sender friction | High            | ✅            | ✅ (PhotoSync)         |
+| Zero deployment      | Medium          | ✅            | ❌                     |
+| Zero maintenance     | Medium          | ✅            | ❌                     |
+| Graceful deprecation | High            | ✅            | ❌ (wasted investment) |
+| Pipeline integration | Low (temporary) | Adequate      | Better                 |
 
 **Key insight:** Self-hosted investment doesn't pay off for a temporary bridge. PhotoPrism's filesystem advantages are irrelevant if the mechanism is deprecated in weeks/months.
 

@@ -4,12 +4,12 @@ Research and decision matrix for sending and receiving photos to/from mother's i
 
 ## Decision Matrix
 
-| Solution | Sender Friction | Reliability Today | Self-Hosted | Setup Complexity |
-|----------|----------------|-------------------|-------------|------------------|
-| Google Photos | Zero | High | No | Low |
-| PhotoSync + PhotoPrism | Zero (trigger-based) | High | Yes | Moderate |
-| Immich (current) | Low-Medium (open app occasionally) | Medium | Yes | Moderate |
-| Immich (post-PhotoKit) | Zero | High (expected) | Yes | Moderate |
+| Solution               | Sender Friction                    | Reliability Today | Self-Hosted | Setup Complexity |
+| ---------------------- | ---------------------------------- | ----------------- | ----------- | ---------------- |
+| Google Photos          | Zero                               | High              | No          | Low              |
+| PhotoSync + PhotoPrism | Zero (trigger-based)               | High              | Yes         | Moderate         |
+| Immich (current)       | Low-Medium (open app occasionally) | Medium            | Yes         | Moderate         |
+| Immich (post-PhotoKit) | Zero                               | High (expected)   | Yes         | Moderate         |
 
 ## Analysis
 
@@ -43,13 +43,13 @@ Immich's current state requires periodic app opening. For a non-technical user, 
 
 ## Trade-off Table
 
-| Factor | Google Photos | PhotoSync+PhotoPrism | Immich |
-|--------|---------------|---------------------|--------|
-| Self-hosted | ❌ | ✅ | ✅ |
-| Zero friction today | ✅ | ✅ | ❌ |
-| No paid apps | ✅ | ❌ ($5-10) | ✅ |
-| Future-proof | Medium | Medium | High |
-| Your maintenance | None | PhotoPrism updates | Immich updates |
+| Factor              | Google Photos | PhotoSync+PhotoPrism | Immich         |
+| ------------------- | ------------- | -------------------- | -------------- |
+| Self-hosted         | ❌            | ✅                   | ✅             |
+| Zero friction today | ✅            | ✅                   | ❌             |
+| No paid apps        | ✅            | ❌ ($5-10)           | ✅             |
+| Future-proof        | Medium        | Medium               | High           |
+| Your maintenance    | None          | PhotoPrism updates   | Immich updates |
 
 ## Conclusion
 
