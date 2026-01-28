@@ -1,0 +1,17 @@
+[tools]
+node = "24.11.1"
+
+[tasks.dev]
+run = "npm run dev"
+
+[tasks.build]
+run = "npm run build"
+
+[tasks.test]
+run = "npm run test"
+
+[tasks.lint]
+run = "npm run lint"
+
+[tasks.format]
+run = "npm run format"
