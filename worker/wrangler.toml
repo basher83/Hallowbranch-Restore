@@ -1,6 +1,8 @@
 name = "restora-gemini-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
+workers_dev = true
+preview_urls = true
 
 [vars]
 # GEMINI_API_KEY is set via `wrangler secret put GEMINI_API_KEY`
