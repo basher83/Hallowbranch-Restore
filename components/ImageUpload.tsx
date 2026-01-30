@@ -120,17 +120,20 @@ const ImageUpload: React.FC = () => {
           isOpen={isCropOpen}
           imageUrl={pendingUrl}
           onCancel={() => {
+            if (pendingUrl) URL.revokeObjectURL(pendingUrl);
             setIsCropOpen(false);
             setPendingFile(null);
             setPendingUrl(null);
           }}
           onSkip={() => {
+            if (pendingUrl) URL.revokeObjectURL(pendingUrl);
             startSession(pendingFile);
             setIsCropOpen(false);
             setPendingFile(null);
             setPendingUrl(null);
           }}
           onApply={(croppedFile, croppedUrl) => {
+            if (pendingUrl) URL.revokeObjectURL(pendingUrl);
             startSession(pendingFile);
             updateOriginalImage(croppedFile, croppedUrl);
             setIsCropOpen(false);

@@ -116,12 +116,20 @@ export const buildPrompt = (options: RestorationOptions): string => {
 export class GeminiService {
   private ai: GoogleGenAI | null = null;
   private chatSession: Chat | null = null;
+  private initPromise: Promise<void> | null = null;
 
   constructor() {
     // We defer initialization until we check for the key
   }
 
-  public async initialize() {
+  public initialize(): Promise<void> {
+    if (!this.initPromise) {
+      this.initPromise = this.doInitialize();
+    }
+    return this.initPromise;
+  }
+
+  private async doInitialize() {
     // Check for API Key via AI Studio standard
     // @ts-ignore
     if (window.aistudio && window.aistudio.hasSelectedApiKey) {

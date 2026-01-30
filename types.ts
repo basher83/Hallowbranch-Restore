@@ -50,9 +50,6 @@ export interface RestorationOptions {
   preEnhance: boolean;
 }
 
-// Alias as requested
-export type RestorationConfig = RestorationOptions;
-
 export interface RestorationSession {
   id: string;
   originalImageUrl: string;

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 
 import BeforeAfterView from './components/BeforeAfterView';
 import EnhancementControls from './components/EnhancementControls';
+import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import ImageUpload from './components/ImageUpload';
 import RefinePanel from './components/RefinePanel';
@@ -89,7 +90,7 @@ const MainLayout: React.FC = () => {
                     {currentSession.history.map((item, idx) => (
                       <img
                         key={item.id}
-                        src={item.imageUrl}
+                        src={item.thumbnailUrl}
                         alt={`Step ${idx}`}
                         width={64}
                         height={64}
@@ -110,9 +111,11 @@ const MainLayout: React.FC = () => {
 
 const App: React.FC = () => {
   return (
-    <AppProvider>
-      <MainLayout />
-    </AppProvider>
+    <ErrorBoundary>
+      <AppProvider>
+        <MainLayout />
+      </AppProvider>
+    </ErrorBoundary>
   );
 };
 

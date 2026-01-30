@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 import { DEFAULT_OPTIONS } from '../constants';
 import { AppState, RestorationOptions, RestorationSession, RestorationHistoryItem } from '../types';
+import { generateThumbnail } from '../utils/imageUtils';
 
 interface AppContextType extends AppState {
   setApiKey: (key: string) => void;
@@ -30,7 +31,18 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
   const setApiKey = (key: string) => setApiKeyState(key);
 
+  const revokeBlobUrl = (url: string | undefined) => {
+    if (url?.startsWith('blob:')) URL.revokeObjectURL(url);
+  };
+
   const startSession = (file: File) => {
+    setCurrentSession((prev) => {
+      if (prev) {
+        revokeBlobUrl(prev.originalImageUrl);
+        revokeBlobUrl(prev.baseImageUrl);
+      }
+      return null;
+    });
     const url = URL.createObjectURL(file);
     setCurrentSession({
       id: Date.now().toString(),
@@ -47,10 +59,12 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const addToHistory = (imageUrl: string, prompt: string, type: 'initial' | 'refinement') => {
     if (!currentSession) return;
 
+    const itemId = Date.now().toString();
+
     const newItem: RestorationHistoryItem = {
-      id: Date.now().toString(),
+      id: itemId,
       imageUrl,
-      thumbnailUrl: imageUrl,
+      thumbnailUrl: imageUrl, // fallback until async thumbnail is ready
       promptUsed: prompt,
       timestamp: Date.now(),
       type,
@@ -61,13 +75,35 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
       return {
         ...prev,
         history: [...prev.history, newItem],
-        currentStepIndex: prev.history.length, // index of the new item
+        currentStepIndex: prev.history.length,
       };
     });
+
+    generateThumbnail(imageUrl)
+      .then((thumbUrl) => {
+        setCurrentSession((prev) => {
+          if (!prev) return prev;
+          return {
+            ...prev,
+            history: prev.history.map((item) =>
+              item.id === itemId ? { ...item, thumbnailUrl: thumbUrl } : item,
+            ),
+          };
+        });
+      })
+      .catch(() => {
+        // Thumbnail generation failed; keep the full-size fallback
+      });
   };
 
   const resetSession = () => {
-    setCurrentSession(null);
+    setCurrentSession((prev) => {
+      if (prev) {
+        revokeBlobUrl(prev.originalImageUrl);
+        revokeBlobUrl(prev.baseImageUrl);
+      }
+      return null;
+    });
     setOptions(DEFAULT_OPTIONS);
     setError(null);
     setActiveTab('global');
@@ -77,6 +113,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const updateOriginalImage = (file: File, url: string) => {
     setCurrentSession((prev) => {
       if (!prev) return null;
+      revokeBlobUrl(prev.originalImageUrl);
+      revokeBlobUrl(prev.baseImageUrl);
       return {
         ...prev,
         originalImageUrl: url,
@@ -90,6 +128,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
   const updateBaseImage = (file: File, url: string) => {
     setCurrentSession((prev) => {
       if (!prev) return null;
+      if (prev.baseImageUrl !== prev.originalImageUrl) {
+        revokeBlobUrl(prev.baseImageUrl);
+      }
       return {
         ...prev,
         baseImageUrl: url,

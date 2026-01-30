@@ -40,7 +40,19 @@ const EnhancementControls: React.FC = () => {
 
   const isSubmitting = isProcessing || isPreEnhancing;
 
-  const handleGlobalChange = (key: keyof RestorationOptions, value: any) => {
+  const cleanupPreview = () => {
+    setPreviewOriginal(null);
+    setPreviewEnhanced(null);
+    setPendingFileForPreview(null);
+    setIsPreviewOpen(false);
+    setModalOpen(false);
+    setProcessing(false);
+  };
+
+  const handleGlobalChange = <K extends keyof RestorationOptions>(
+    key: K,
+    value: RestorationOptions[K],
+  ) => {
     setOptions({ ...options, [key]: value });
   };
 
@@ -62,38 +74,30 @@ const EnhancementControls: React.FC = () => {
     setProcessing(true);
     setError(null);
     try {
-      if (!options.preEnhance) {
-        updateBaseImage(currentSession.originalImageFile, currentSession.originalImageUrl);
-      }
-
-      let fileToProcess = currentSession.baseImageFile || currentSession.originalImageFile;
-
       if (options.preEnhance) {
         setIsPreEnhancing(true);
         const sourceUrl = currentSession.baseImageUrl || currentSession.originalImageUrl;
         try {
-          const enhancedUrl = await preEnhanceImage(sourceUrl, fileToProcess);
+          const enhancedUrl = await preEnhanceImage(sourceUrl, currentSession.originalImageFile);
           setPreEnhanceInfo(null);
           const response = await fetch(enhancedUrl);
           const blob = await response.blob();
           const enhancedFile = new File([blob], 'enhanced.png', {
             type: blob.type || 'image/png',
           });
-          updateBaseImage(enhancedFile, enhancedUrl);
-          fileToProcess = enhancedFile;
           setIsPreEnhancing(false);
 
-        setPreviewOriginal(sourceUrl);
-        setPreviewEnhanced(enhancedUrl);
-        setPendingFileForPreview(enhancedFile);
-        setIsPreviewOpen(true);
-        setModalOpen(true);
-        setProcessing(false);
-        return;
-        } catch (error: any) {
+          setPreviewOriginal(sourceUrl);
+          setPreviewEnhanced(enhancedUrl);
+          setPendingFileForPreview(enhancedFile);
+          setIsPreviewOpen(true);
+          setModalOpen(true);
+          setProcessing(false);
+          return;
+        } catch (error: unknown) {
           setIsPreEnhancing(false);
           const message =
-            error?.message ||
+            (error instanceof Error && error.message) ||
             'Pre-enhance failed. Try disabling pre-enhance or use a smaller crop.';
           setError(message);
           setPreEnhanceInfo(
@@ -102,18 +106,25 @@ const EnhancementControls: React.FC = () => {
           setProcessing(false);
           return;
         }
+      } else {
+        updateBaseImage(currentSession.originalImageFile, currentSession.originalImageUrl);
+        await finalizeRestoration(currentSession.originalImageFile);
       }
-
-      await finalizeRestoration(fileToProcess);
-    } catch (e: any) {
-      setError(e.message || 'An unexpected error occurred during processing.');
+    } catch (e: unknown) {
+      const message =
+        e instanceof Error ? e.message : 'An unexpected error occurred during processing.';
+      setError(message);
     } finally {
       setIsPreEnhancing(false);
       setProcessing(false);
     }
   };
 
-  const updateRegion = (index: number, field: keyof LocalRepairRegion, value: any) => {
+  const updateRegion = <K extends keyof LocalRepairRegion>(
+    index: number,
+    field: K,
+    value: LocalRepairRegion[K],
+  ) => {
     const updated = [...options.localRepairRegions];
     updated[index] = { ...updated[index], [field]: value };
     setOptions({ ...options, localRepairRegions: updated });
@@ -417,37 +428,32 @@ const EnhancementControls: React.FC = () => {
           if (!pendingFileForPreview) return;
           setProcessing(true);
           try {
+            updateBaseImage(pendingFileForPreview, previewEnhanced || '');
             await finalizeRestoration(pendingFileForPreview);
-          } catch (e: any) {
-            setError(e.message || 'An unexpected error occurred during processing.');
+          } catch (e: unknown) {
+            const message =
+              e instanceof Error ? e.message : 'An unexpected error occurred during processing.';
+            setError(message);
           } finally {
-            setPreviewOriginal(null);
-            setPreviewEnhanced(null);
-            setPendingFileForPreview(null);
-            setIsPreviewOpen(false);
-            setModalOpen(false);
-            setProcessing(false);
+            cleanupPreview();
           }
         }}
         onSkip={async () => {
           if (!currentSession) return;
           setProcessing(true);
           try {
+            updateBaseImage(currentSession.originalImageFile, currentSession.originalImageUrl);
             await finalizeRestoration(currentSession.originalImageFile);
-          } catch (e: any) {
-            setError(e.message || 'An unexpected error occurred during processing.');
+          } catch (e: unknown) {
+            const message =
+              e instanceof Error ? e.message : 'An unexpected error occurred during processing.';
+            setError(message);
           } finally {
-            setPreviewOriginal(null);
-            setPreviewEnhanced(null);
-            setPendingFileForPreview(null);
-            setIsPreviewOpen(false);
-            setModalOpen(false);
-            setProcessing(false);
+            cleanupPreview();
           }
         }}
         onClose={() => {
-          setIsPreviewOpen(false);
-          setModalOpen(false);
+          cleanupPreview();
         }}
       />
     </div>
